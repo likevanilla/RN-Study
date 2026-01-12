@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { type BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
 import { Tabs, useRouter } from "expo-router";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import {
   Animated,
   Modal,
@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { AuthContext } from "../_layout";
 
 const AnimatedTabBarButton = ({
   children,
@@ -56,7 +57,8 @@ const AnimatedTabBarButton = ({
 
 export default function TabLayout() {
   const router = useRouter();
-  const isLoggedIn = true;
+  const { user } = useContext(AuthContext);
+  const isLoggedIn = !!user;
   const [isLoginModalOpen, setIsLoinModalOpen] = useState(false);
 
   const openLoginModal = () => {
@@ -65,6 +67,10 @@ export default function TabLayout() {
 
   const closeLoginModal = () => {
     setIsLoinModalOpen(false);
+  };
+
+  const toLoginPage = () => {
+    router.push("/login");
   };
 
   return (
@@ -187,7 +193,9 @@ export default function TabLayout() {
           }}
         >
           <View style={{ backgroundColor: "white", padding: 20 }}>
-            <Text>Login Modal</Text>
+            <Pressable onPress={toLoginPage}>
+              <Text>Login Modal</Text>
+            </Pressable>
             <TouchableOpacity onPress={closeLoginModal}>
               <Ionicons name="close" size={24} colors="#555" />
             </TouchableOpacity>
