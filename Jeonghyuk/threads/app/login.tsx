@@ -9,13 +9,50 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AuthContext } from "./_layout";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import {
+  getKeyHashAndroid,
+  initializeKakaoSDK,
+} from "@react-native-kakao/core";
+import { login as kakaologin, me } from "@react-native-kakao/user";
+import * as AppleAuthentication from "expo-apple-authentication";
+import Constants from "expo-constants";
 
 export default function Login() {
   const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
   const { user, login } = useContext(AuthContext);
   const isLoggedIn = !!user;
+
+  useEffect(() => {
+    initializeKakaoSDK(Constants.expoConfig?.extra?.kakaoAppKey as string);
+  }, []);
+
+  const onAppleLogin = async () => {
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+      console.log(credential.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onKakaoLogin = async () => {
+    console.log(await getKeyHashAndroid());
+    try {
+      const result = await kakaologin();
+      console.log(result);
+      const user = await me();
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (isLoggedIn) {
     return <Redirect href="/(tabs)" />;
@@ -36,6 +73,20 @@ export default function Login() {
       <Pressable style={styles.loginButton} onPress={login}>
         <Text style={styles.loginButtonText}>Login</Text>
       </Pressable>
+      <Pressable
+        style={[styles.loginButton, styles.kakaoLoginButton]}
+        onPress={onKakaoLogin}
+      >
+        <Text style={[styles.loginButtonText, styles.kakaoLoginButtonText]}>
+          Kakao Login
+        </Text>
+      </Pressable>
+      <Pressable
+        style={[styles.loginButton, styles.appleLoginButton]}
+        onPress={onAppleLogin}
+      >
+        <Text style={styles.loginButtonText}>Apple Login</Text>
+      </Pressable>
     </View>
   );
 }
@@ -50,5 +101,14 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     color: "white",
+  },
+  kakaoLoginButton: {
+    backgroundColor: "#FEE500",
+  },
+  kakaoLoginButtonText: {
+    color: "black",
+  },
+  appleLoginButton: {
+    backgroundColor: "black",
   },
 });

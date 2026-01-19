@@ -1,4 +1,5 @@
 import "expo-router/entry";
+import * as Device from "expo-device";
 
 import { createServer, Response, Server } from "miragejs";
 
@@ -8,7 +9,7 @@ declare global {
   }
 }
 
-if (__DEV__ && typeof window !== "undefined") {
+if (__DEV__ && typeof window !== "undefined" && !Device.isDevice) {
   if (window.server) {
     window.server.shutdown();
   }
