@@ -99,7 +99,7 @@ export default function TabLayout() {
                   : styles.loginButtonTextLight
               }
             >
-              로그인
+              로그인!!
             </Text>
           </TouchableOpacity>
         )}

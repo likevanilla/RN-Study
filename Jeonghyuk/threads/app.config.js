@@ -1,3 +1,13 @@
+import "dotenv/config";
+
+const fs = require("fs");
+const path = require("path");
+
+const googleServicesPath = "./google-services.json";
+const hasGoogleServices = fs.existsSync(
+  path.resolve(__dirname, googleServicesPath),
+);
+
 export default {
   expo: {
     name: "threads-clone",
@@ -18,7 +28,9 @@ export default {
     },
     android: {
       package: "com.likevanilla.threads",
-      googleServicesFile: "./google-services.json",
+      googleServicesFile: hasGoogleServices
+        ? googleServicesPath
+        : process.env.GOOGLE_SERVICES_JSON_PATH,
       adaptiveIcon: {
         foregroundImage: "./assets/images/android-icon-foreground.png",
         backgroundColor: "#ffffff",
@@ -43,6 +55,12 @@ export default {
       imageWidth: 200,
       resizeMode: "contain",
       backgroundColor: "#ffffff",
+    },
+    updates: {
+      url: "https://u.expo.dev/a4f57aba-20f6-437b-85da-5b1217981be9",
+    },
+    runtimeVersion: {
+      policy: "appVersion",
     },
     plugins: [
       "expo-router",
@@ -110,7 +128,7 @@ export default {
       typedRoutes: true,
     },
     extra: {
-      kakaoAppKey: process.env.KAKAO_APP_KEY,
+      nativeAppKey: process.env.KAKAO_APP_KEY,
       router: {},
       eas: {
         projectId: "a4f57aba-20f6-437b-85da-5b1217981be9",
