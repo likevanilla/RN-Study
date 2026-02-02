@@ -1,0 +1,18 @@
+<lint-module
+    format="1"
+    dir="/Users/ijeonghyeog/Desktop/ReactNative/RN-Study/Jeonghyuk/threads/modules/background-uploader/android"
+    name=":background-uploader"
+    type="LIBRARY"
+    maven="com.likevanilla.backgroundUploader:background-uploader:0.7.6"
+    agpVersion="8.8.2"
+    buildFolder="build"
+    bootClassPath="/Users/ijeonghyeog/Library/Android/sdk/platforms/android-35/android.jar:/Users/ijeonghyeog/Library/Android/sdk/build-tools/35.0.0/core-lambda-stubs.jar"
+    javaSourceLevel="17"
+    compileTarget="android-35"
+    neverShrinking="true">
+  <lintOptions
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>
